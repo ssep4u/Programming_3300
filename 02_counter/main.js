@@ -5,15 +5,19 @@ let number = 0;
 const resultH1 = document.getElementById("result");
 // button에 있는 + 요소를 가져오자
 // const plusButton = document.getElementsByTagName("button")[0];
-const plusButton = document.getElementsByClassName("plus")[0];
+// const plusButton = document.getElementsByClassName("plus")[0];
 
 // plusButton.addEventListener("click", () => {
 //     number++;
 //     resultH1.innerHTML = number;
 // });
-plusButton.onclick = () => {
+// plusButton.onclick = () => {
+//     number++;
+//     resultH1.innerHTML = number;
+// };
+
+// function plus() {
+const plus = () => {
     number++;
     resultH1.innerHTML = number;
-};
-
-
+}
