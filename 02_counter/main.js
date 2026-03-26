@@ -1,4 +1,4 @@
-let number = 0;
+let number = 100;
 
 // h1에 있는 숫자 요소를 가져오자
 // const resultH1 = document.getElementsByTagName("h1")[0];
@@ -15,13 +15,16 @@ const resultH1 = document.getElementById("result");
 //     number++;
 //     resultH1.innerHTML = number;
 // };
-
+function render() {
+    resultH1.innerHTML = number;
+}
 // function plus() {
 const plus = (value = 1) => {
     number += value;
-    resultH1.innerHTML = number;
+    render();
 }
 const reset = () => {
-    number = 0;
-    resultH1.innerHTML = number;
+    number = 100;
+    render();
 }
+render();
