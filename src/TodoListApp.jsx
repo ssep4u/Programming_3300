@@ -39,12 +39,20 @@ function TodoListApp() {
             todos.filter((todo) => todo.id !== id)
         )
     }
+    const editTodo = (id, newText) => {
+        //todos 하나씩 꺼내어 todo. id가 같으면, 복사하고, text 속성값 newText로 수정하자
+        setTodos((todos) =>
+            todos.map((todo) =>
+                todo.id === id ? {...todo, text: newText} : todo
+            )
+        )
+    }
 
     return (
         <div className="todo">
             <TodoHeader />
             <TodoAdder addTodo={addTodo} />
-            <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
+            <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} editTodo={editTodo} />
         </div>
     )
 }
