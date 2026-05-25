@@ -26,3 +26,4 @@ npm create vite@latest .
 - LocalStorage, `useEffect()`
 - Pull Request
 - 3200 임정훈
+- 1-1	날짜 표시?	★	Date, 컴포넌트 렌더링

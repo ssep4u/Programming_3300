@@ -19,6 +19,7 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo }) {
             setIsEditing(false);
         }
     }
+
     return (
         // todo.isCompleted가 true면 todo__item--complete 클래스 추가, 아니면 말고
         <li className={`todo__item${todo.isCompleted ? " todo__item--complete" : ""}`}>
@@ -38,12 +39,12 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo }) {
                     value={editText}
                     onChange={(event) => setEditText(event.target.value)}
                     //enter 치면 handleEditClick()
-                    onKeyUp={(event) => {event.key === 'Enter' && handleEditClick()}}
+                    onKeyUp={(event) => { event.key === 'Enter' && handleEditClick() }}
                     autoFocus
                 />
             }
 
-
+            <span className="todo__date">{new Date(todo.id).toLocaleDateString()}</span>
             <Button
                 className="todo__button todo__button--edit"
                 onClick={handleEditClick}
