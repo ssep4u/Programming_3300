@@ -8,6 +8,12 @@
     border-radius: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);    /* 세로:아래로 2px, blur: 4px */
 }
+.todo__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
 .todo__form {
     display: flex;
     margin-bottom: 10px;
@@ -31,6 +37,9 @@
 }
 .todo__button--add {
     background-color: #4984e4;
+}
+.todo__button--share {
+    background-color: #555;
 }
 .todo__item {
     display: flex;
