@@ -43,8 +43,8 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo }) {
                 />
             }
 
-
-            <Button
+            <span>{todo.date}</span>
+            <Button 
                 className="todo__button todo__button--edit"
                 onClick={handleEditClick}
             >
