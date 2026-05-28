@@ -13,6 +13,7 @@ class Todo {
         this.id = Date.now();   //할일 id: 고유의 값 == new Date().getTime()
         this.text = text;       //할일의 내용
         this.isCompleted = false; //할일 완료 여부
+        this.completedAt = null; // 완료된 시각 (ms 기준으로), 미완료면 null
     }
 }
 const TODOS_STORAGE_KEY = 'todos';
@@ -25,6 +26,17 @@ function TodoListApp() {
     }
 
     const [todos, setTodos] = useState(initTodos);  //initTodos 함수는 react 처음 한번 호출
+    // 완료한 지 하루가 지난 항목 자동 삭제
+    useEffect(() => {
+        const oneDayMs = 24 * 60 * 60 * 1000;
+        const now = Date.now();
+        setTodos((prev) =>
+            prev.filter((todo) =>
+                !(todo.isCompleted && todo.completedAt && now - todo.completedAt >= oneDayMs)
+            )
+        );
+    }, []);
+
     //LocalStorage에 할 일 목록 저장하자
     useEffect(() => {
         localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(todos)); //JSON -> string
@@ -39,11 +51,16 @@ function TodoListApp() {
     ]);
     const toggleTodo = (id) => {
         setTodos((todos) =>
-            //todos에서 하나씩 꺼내어 todo. todo의 id 와 id가 같다면, 기존 todo.isCompleted 값 수정. 아니면 그대로
-            todos.map((todo) =>
-                todo.id === id ? { ...todo, isCompleted: !todo.isCompleted} : todo
-            )
-        )
+            todos.map((todo) => {
+                if (todo.id !== id) return todo;
+                const nowCompleted = !todo.isCompleted;
+                return {
+                    ...todo,
+                    isCompleted: nowCompleted,
+                    completedAt: nowCompleted ? Date.now() : null,
+                };
+            })
+        );
     }
     const deleteTodo = (id) => {
         //todos에서 하나씩 꺼낸 todo. id가 다르면, 복사하자
