@@ -1,15 +1,23 @@
 # Programming 수업 소스코드 😁
+
 ## 02_counter
+
 vanilla HTML, JavaScript
+
 ## React 시작 🤧
+
 ```shell
 npm create vite@latest .
 ```
+
 ### CounterApp 🤐🤐
+
 - `useState()`
 - `onClick={() => set함수()}`
 - `onClick={() => set함수((이전state) => 이전state + 1)}`
+
 ### TodoListApp 😆
+
 - React Component 분리
 - for -> htmlFor, class -> className
 - props
@@ -33,8 +41,10 @@ npm create vite@latest .
             <Route path="/" element={} />
         </Routes>
     </BrowserRouter>
-    ```
+  ```
 - ```javascript
-    <Link to="/"></Link>
-    ```
+  <Link to="/"></Link>
+  ```
 - `useNavigate()`
+
+- 3313 정희진 1-5 배경 음악 ⭐️⭐️⭐️ useRef, <audio>, 재생/정지 상태 && 3-10 완료한 것 하루 지나면 삭제 ⭐️⭐️⭐️ useEffect, 날짜 비교, 자동 정리
