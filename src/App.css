@@ -182,3 +182,14 @@
     border-right-color: var(--border);
   }
 }
+
+.date {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-bg);
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--accent-border);
+  margin: 10px 0;
+}

@@ -38,3 +38,8 @@ npm create vite@latest .
     <Link to="/"></Link>
     ```
 - `useNavigate()`
+
+- 3303 김승주 1-1	날짜 표시?	★	Date, 컴포넌트 렌더링
+- 3303 김승주 1-2	배경색	★	useState, CSS class/style 변경
+- 3303 김승주 1-3	Theme	★★	useState, Context API, CSS 변수
+- 3303 김승주 1-4	font	★	CSS, Google Fonts, theme state

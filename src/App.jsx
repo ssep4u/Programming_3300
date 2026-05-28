@@ -1,122 +1,91 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useEffect } from 'react';
+import './todolist.css'
+// import TodoItemEmpty from './components/TodoItemEmpty.jsx'
+// import Button from './components/Button.jsx'
+// import Checkbox from './components/Checkbox.jsx'
+import TodoHeader from './components/TodoHeader.jsx'
+import TodoAdder from './components/TodoAdder.jsx'
+// import TodoItem from './components/TodoItem.jsx'
+import TodoList from './components/TodoList.jsx'
 
-function 
-App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+class Todo {
+    constructor(text) {
+        this.id = Date.now();   //할일 id: 고유의 값 == new Date().getTime()
+        this.text = text;       //할일의 내용
+        this.isCompleted = false; //할일 완료 여부
+    }
 }
 
-export default App
+const TODOS_STORAGE_KEY = 'todos';
+
+function TodoListApp() {
+
+    const today = new Date().toLocaleDateString()
+
+    //LocalStorage에 저장된 할 일 목록 불러오자
+    //LocalStorage에 저장된게 있으면, todos 대입, 없으면 []
+    const initTodos = () => {
+        const savedTodos = localStorage.getItem(TODOS_STORAGE_KEY);
+        return savedTodos ? JSON.parse(savedTodos) : []; //string -> JSON
+    }
+
+    const [todos, setTodos] = useState(initTodos);
+
+    //LocalStorage에 할 일 목록 저장하자
+    useEffect(() => {
+        localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(todos));
+    }, [todos]);
+
+    const addTodo = (text) => setTodos((todos) => [
+        ...todos,
+        new Todo(text)
+    ]);
+
+    const toggleTodo = (id) => {
+        setTodos((todos) =>
+            todos.map((todo) =>
+                todo.id === id
+                    ? { ...todo, isCompleted: !todo.isCompleted }
+                    : todo
+            )
+        )
+    }
+
+    const deleteTodo = (id) => {
+        setTodos((todos) =>
+            todos.filter((todo) => todo.id !== id)
+        )
+    }
+
+    const editTodo = (id, newText) => {
+        setTodos((todos) =>
+            todos.map((todo) =>
+                todo.id === id
+                    ? { ...todo, text: newText }
+                    : todo
+            )
+        )
+    }
+
+    return (
+        <div className="todo">
+
+            <h2 className="date">
+                오늘 날짜 : {today}
+            </h2>
+
+            <TodoHeader />
+
+            <TodoAdder addTodo={addTodo} />
+
+            <TodoList
+                todos={todos}
+                toggleTodo={toggleTodo}
+                deleteTodo={deleteTodo}
+                editTodo={editTodo}
+            />
+        </div>
+    )
+}
+
+export default TodoListApp;
