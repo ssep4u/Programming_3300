@@ -1,0 +1,32 @@
+.audio-box{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: max(80%, 400px);    /* 보통: 80%, 최소: 400px */
+    margin: 20px auto;  /* 위아래: 20px, 좌우: 여백 균등 분배 */
+    background-color: #92bcff;
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);    /* 세로:아래로 2px, blur: 4px */
+    display: flex;
+    flex-direction: column;
+}
+
+.audio-button {
+    height: 40px;
+    width: 40px;
+    padding: 10px;
+    margin: 2px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #92bcff;
+    background-color: #ffffff;
+}
+
+.audio-status{
+    margin-left: 10px;
+    font-size: 1.2rem;
+}
