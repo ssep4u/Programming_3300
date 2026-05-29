@@ -4,7 +4,7 @@ export default function Weather() {
   const [weather, setWeather] = useState(null);
   const API_KEY = import.meta.env.VITE_API_KEY;
 
-  useEffect(() => {
+  useEffect(() => { // 서버 요청
     fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=Seoul&appid=${API_KEY}&units=metric&lang=kr`,
     )
