@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Button from './Button.jsx'
-import CurrentDate from './CurrentDate.jsx';
+
 export default function TodoAdder({ addTodo }) {
     const [inputTodo, setInputTodo] = useState('');
     //submit이면 handleSubmit 실행하자
@@ -14,7 +14,6 @@ export default function TodoAdder({ addTodo }) {
         setInputTodo('');       //input text 빈칸으로 하자
     }
     return (
-        <div>
         <form className="todo__form" onSubmit={handleSubmit}>
             <input
                 type="text"
@@ -25,7 +24,5 @@ export default function TodoAdder({ addTodo }) {
             />
             <Button type="submit" className="todo__button todo__button--add">Add</Button>
         </form>
-        <CurrentDate />
-        </div>
     )
 }
