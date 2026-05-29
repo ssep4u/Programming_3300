@@ -38,3 +38,4 @@ npm create vite@latest .
     <Link to="/"></Link>
     ```
 - `useNavigate()`
+- 1-9	날씨	★★★★	useEffect, fetch, 외부 API
