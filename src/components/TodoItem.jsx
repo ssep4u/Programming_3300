@@ -5,6 +5,7 @@ import Button from './Button.jsx'
 export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo }) {
     const [isEditing, setIsEditing] = useState(false);  //수정중인지 아닌지
     const [editText, setEditText] = useState(todo.text);    //수정한 text
+
     function handleEditClick() {
         if (!isEditing) {
             //edit 시작
@@ -19,6 +20,12 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo }) {
             setIsEditing(false);
         }
     }
+
+    function handleCancelEdit() {
+        setEditText(todo.text);
+        setIsEditing(false);
+    }
+
     return (
         // todo.isCompleted가 true면 todo__item--complete 클래스 추가, 아니면 말고
         <li className={`todo__item${todo.isCompleted ? " todo__item--complete" : ""}`}>
@@ -37,13 +44,21 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo }) {
                     className='todo__input--edit'
                     value={editText}
                     onChange={(event) => setEditText(event.target.value)}
-                    //enter 치면 handleEditClick()
-                    onKeyUp={(event) => { event.key === 'Enter' && handleEditClick() }}
+                    onKeyDown={(event) => {
+                        if (event.key === 'Enter') {
+                            event.preventDefault();
+                            handleEditClick();
+                        }
+
+                        if (event.key === 'Escape') {
+                            handleCancelEdit();
+                        }
+                    }}
                     autoFocus
                 />
             }
 
-
+            <span>{new Date(todo.id).toLocaleString()}</span>
             <Button
                 className="todo__button todo__button--edit"
                 onClick={handleEditClick}
