@@ -38,3 +38,4 @@ npm create vite@latest .
     <Link to="/"></Link>
     ```
 - `useNavigate()`
+- 3304 김지성 3-1	추가할 때 맨 위에 표시 하자	★	addTodo() 수정
