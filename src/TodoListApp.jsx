@@ -7,14 +7,8 @@ import TodoHeader from './components/TodoHeader.jsx'
 import TodoAdder from './components/TodoAdder.jsx'
 // import TodoItem from './components/TodoItem.jsx'
 import TodoList from './components/TodoList.jsx'
+import { Todo } from './types/Todo.jsx'
 
-class Todo {
-    constructor(text) {
-        this.id = Date.now();   //할일 id: 고유의 값 == new Date().getTime()
-        this.text = text;       //할일의 내용
-        this.isCompleted = false; //할일 완료 여부
-    }
-}
 const TODOS_STORAGE_KEY = 'todos';
 function TodoListApp() {
     //LocalStorage에 저장된 할 일 목록 불러오자
@@ -30,24 +24,24 @@ function TodoListApp() {
         localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(todos)); //JSON -> string
     }, [todos]);
 
-    const addTodo = (text) => setTodos((todos) => [
+    const addTodo = (text, deadline) => setTodos((todos) => [
         //이전 todos 복사
         ...todos,
         //newTodo 만들어서
         //뒤에 추가하자
-        new Todo(text)
+        new Todo(text, deadline)
     ]);
     const toggleTodo = (id) => {
         setTodos((todos) =>
             //todos에서 하나씩 꺼내어 todo. todo의 id 와 id가 같다면, 기존 todo.isCompleted 값 수정. 아니면 그대로
             todos.map((todo) =>
-                todo.id === id ? { ...todo, isCompleted: !todo.isCompleted} : todo
+                todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
             )
         )
     }
     const deleteTodo = (id) => {
         //todos에서 하나씩 꺼낸 todo. id가 다르면, 복사하자
-        setTodos((todos) => 
+        setTodos((todos) =>
             todos.filter((todo) => todo.id !== id)
         )
     }
@@ -55,7 +49,7 @@ function TodoListApp() {
         //todos 하나씩 꺼내어 todo. id가 같으면, 복사하고, text 속성값 newText로 수정하자
         setTodos((todos) =>
             todos.map((todo) =>
-                todo.id === id ? {...todo, text: newText} : todo
+                todo.id === id ? { ...todo, text: newText } : todo
             )
         )
     }

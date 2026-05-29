@@ -26,6 +26,7 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo }) {
             {!isEditing &&
                 <Checkbox
                     id={todo.id}
+                    date={todo.deadline}
                     checked={todo.isCompleted}
                     onChange={() => toggleTodo(todo.id)}
                 >{todo.text}</Checkbox>
@@ -42,7 +43,7 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo }) {
                     autoFocus
                 />
             }
-
+            
 
             <Button
                 className="todo__button todo__button--edit"
