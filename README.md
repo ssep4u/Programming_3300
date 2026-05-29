@@ -38,3 +38,4 @@ npm create vite@latest .
     <Link to="/"></Link>
     ```
 - `useNavigate()`
+- 3307 유성윤 2-11 상단 고정(pin) ★★ boolean 값, 정렬 로직

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Checkbox from './Checkbox.jsx'
 import Button from './Button.jsx'
 
-export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo }) {
+export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo, togglePinTodo }) {
     const [isEditing, setIsEditing] = useState(false);  //수정중인지 아닌지
     const [editText, setEditText] = useState(todo.text);    //수정한 text
     function handleEditClick() {
@@ -21,7 +21,7 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo }) {
     }
     return (
         // todo.isCompleted가 true면 todo__item--complete 클래스 추가, 아니면 말고
-        <li className={`todo__item${todo.isCompleted ? " todo__item--complete" : ""}`}>
+        <li className={`todo__item${todo.isCompleted ? " todo__item--complete" : ""}${todo.isPined ? " todo__item--pined" : ""}`}>
             {/* 수정중이 아니면 */}
             {!isEditing &&
                 <Checkbox
@@ -54,6 +54,10 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo }) {
                 className="todo__button todo__button--delete"
                 onClick={() => deleteTodo(todo.id)}
             >❌</Button>
+            <Button
+                className={`todo__button todo__button--pin${todo.isPined ? " todo__button--pined" : ""}`}
+                onClick={() => togglePinTodo(todo.id)}
+            >{todo.isPined ? "📍" : "📌"}</Button>
         </li>
     )
 }
