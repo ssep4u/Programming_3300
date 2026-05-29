@@ -1,13 +1,8 @@
 import { useState, useEffect } from 'react';
 import './todolist.css'
 
-// import TodoItemEmpty from './components/TodoItemEmpty.jsx'
-// import Button from './components/Button.jsx'
-// import Checkbox from './components/Checkbox.jsx'
-
 import TodoHeader from './components/TodoHeader.jsx'
 import TodoAdder from './components/TodoAdder.jsx'
-// import TodoItem from './components/TodoItem.jsx'
 import TodoList from './components/TodoList.jsx'
 
 class Todo {
@@ -15,6 +10,7 @@ class Todo {
         this.id = Date.now(); // 할 일 id
         this.text = text; // 할 일 내용
         this.isCompleted = false; // 완료 여부
+        this.createdAt = `추가한 날짜 : ${new Date().toLocaleDateString()}`;
     }
 }
 
@@ -22,10 +18,7 @@ const TODOS_STORAGE_KEY = 'todos';
 
 function TodoListApp() {
 
-    // 오늘 날짜
-    const today = new Date().toLocaleDateString()
-
-    // LocalStorage에 저장된 할 일 목록 불러오기
+    // LocalStorage 불러오기
     const initTodos = () => {
         const savedTodos = localStorage.getItem(TODOS_STORAGE_KEY);
 
@@ -34,10 +27,10 @@ function TodoListApp() {
             : [];
     }
 
-    // todos 상태
+    // 상태
     const [todos, setTodos] = useState(initTodos);
 
-    // LocalStorage에 저장
+    // LocalStorage 저장
     useEffect(() => {
         localStorage.setItem(
             TODOS_STORAGE_KEY,
@@ -45,7 +38,7 @@ function TodoListApp() {
         );
     }, [todos]);
 
-    // 할 일 추가
+    // 추가
     const addTodo = (text) => setTodos((todos) => [
         ...todos,
         new Todo(text)
@@ -88,10 +81,6 @@ function TodoListApp() {
 
     return (
         <div className="todo">
-
-            <div className="date">
-                오늘 날짜 : {today}
-            </div>
 
             <TodoHeader />
 
