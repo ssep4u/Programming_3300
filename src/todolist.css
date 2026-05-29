@@ -1,3 +1,25 @@
+.todo__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.todo__music {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.todo__button--music {
+    font-size: 1.4rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.todo__song-label {
+    font-size: 0.85rem;
+    color: #999;
+    margin-left: 4px;
+}
 .todo {
     /* width: 80%;
     min-width: 400px; */
