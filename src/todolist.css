@@ -68,5 +68,35 @@
     color: #999;
 }
 
+/* 배경색 클래스 */
+.todo--white  { background-color: #f9f9f9; }
+.todo--yellow { background-color: #fffde7; }
+.todo--green  { background-color: #e8f5e9; }
+.todo--blue   { background-color: #e3f2fd; }
+.todo--pink   { background-color: #fce4ec; }
+
+/* 배경색 선택 버튼 */
+.todo__colors {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+.todo__color-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    cursor: pointer;
+}
+.todo__color-btn--active {
+    border-color: #333;
+    transform: scale(1.2);
+}
+.todo__color-btn--white  { background-color: #f9f9f9; }
+.todo__color-btn--yellow { background-color: #fffde7; }
+.todo__color-btn--green  { background-color: #e8f5e9; }
+.todo__color-btn--blue   { background-color: #e3f2fd; }
+.todo__color-btn--pink   { background-color: #fce4ec; }
+
 /* A > B: 바로 아래 자식
 A B: 전체 자식 중에 한 자식: 자손 */
