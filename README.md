@@ -38,6 +38,7 @@ npm create vite@latest .
     <Link to="/"></Link>
     ```
 - `useNavigate()`
+- 3307 유성윤 2-11 상단 고정(pin) ★★ boolean 값, 정렬 로직
 - `3305 신채은 배경색 useState, CSS classs/style 변경`
 - 3301 강재호 1-1	날짜 표시?	★	Date, 컴포넌트 렌더링
 - 3310 이상연 2-1	수정하다가 ESC 누르면, 수정 취소	★	<Checkbox onKeyDown />

@@ -15,6 +15,7 @@ class Todo {
         this.id = Date.now();   //할일 id: 고유의 값 == new Date().getTime()
         this.text = text;       //할일의 내용
         this.isCompleted = false; //할일 완료 여부
+        this.isPined = false;    //할일 고정 여부
     }
 }
 const TODOS_STORAGE_KEY = 'todos';
@@ -62,6 +63,13 @@ function TodoListApp() {
             )
         )
     }
+    const togglePinTodo = (id) => {
+        setTodos((todos) =>
+            todos.map((todo) =>
+                todo.id === id ? { ...todo, isPined: !todo.isPined} : todo
+            )
+        )
+    }
 
     return (
         <div className={`todo todo--${bgColor}`}>
@@ -76,7 +84,7 @@ function TodoListApp() {
                 ))}
             </div>
             <TodoAdder addTodo={addTodo} />
-            <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} editTodo={editTodo} />
+            <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} editTodo={editTodo} togglePinTodo={togglePinTodo} />
         </div>
     )
 }
