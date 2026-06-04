@@ -7,6 +7,7 @@ import TodoHeader from './components/TodoHeader.jsx'
 import TodoAdder from './components/TodoAdder.jsx'
 // import TodoItem from './components/TodoItem.jsx'
 import TodoList from './components/TodoList.jsx'
+import TodoSearch from './components/Search.jsx';
 
 const BG_COLORS = ['white', 'yellow', 'green', 'blue', 'pink']
 
@@ -26,6 +27,9 @@ function TodoListApp() {
         const savedTodos = localStorage.getItem(TODOS_STORAGE_KEY);
         return savedTodos ? JSON.parse(savedTodos) : [];                 //string -> JSON
     }
+
+    //검색state
+    const [searchTerm, setSearchTerm] = useState("");
 
     const [todos, setTodos] = useState(initTodos);  //initTodos 함수는 react 처음 한번 호출
     const [bgColor, setBgColor] = useState('white');
@@ -71,6 +75,11 @@ function TodoListApp() {
         )
     }
 
+    const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+    const filteredTodos = normalizedSearchTerm
+        ? todos.filter((todo) => todo.text.toLowerCase().includes(normalizedSearchTerm))
+        : todos;
+
     return (
         <div className={`todo todo--${bgColor}`}>
             <TodoHeader />
@@ -84,7 +93,8 @@ function TodoListApp() {
                 ))}
             </div>
             <TodoAdder addTodo={addTodo} />
-            <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} editTodo={editTodo} togglePinTodo={togglePinTodo} />
+            <TodoSearch searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            <TodoList todos={filteredTodos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} editTodo={editTodo} togglePinTodo={togglePinTodo} />
         </div>
     )
 }
