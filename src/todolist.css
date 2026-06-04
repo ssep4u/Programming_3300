@@ -38,7 +38,7 @@
     padding: 10px;
     border-bottom: 1px solid #eee;
 }
-.todo__item--pined {
+.todo__item--pinned {
     background-color: #fff8df;
 }
 .todo__check {
@@ -60,7 +60,7 @@
     font-size: 0.8rem;
     margin-left: 10px;
 }
-.todo__button--pined {
+.todo__button--pinned {
     background-color: #f0ad00;
 }
 .todo__item--complete .todo__label {
