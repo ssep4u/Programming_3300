@@ -9,11 +9,14 @@ import TodoAdder from './components/TodoAdder.jsx'
 import TodoList from './components/TodoList.jsx'
 import TodoSearch from './components/Search.jsx';
 
+const BG_COLORS = ['white', 'yellow', 'green', 'blue', 'pink']
+
 class Todo {
     constructor(text) {
         this.id = Date.now();   //할일 id: 고유의 값 == new Date().getTime()
         this.text = text;       //할일의 내용
         this.isCompleted = false; //할일 완료 여부
+        this.isPined = false;    //할일 고정 여부
     }
 }
 const TODOS_STORAGE_KEY = 'todos';
@@ -29,6 +32,7 @@ function TodoListApp() {
     const [searchTerm, setSearchTerm] = useState("");
 
     const [todos, setTodos] = useState(initTodos);  //initTodos 함수는 react 처음 한번 호출
+    const [bgColor, setBgColor] = useState('white');
     //LocalStorage에 할 일 목록 저장하자
     useEffect(() => {
         localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(todos)); //JSON -> string
@@ -63,6 +67,13 @@ function TodoListApp() {
             )
         )
     }
+    const togglePinTodo = (id) => {
+        setTodos((todos) =>
+            todos.map((todo) =>
+                todo.id === id ? { ...todo, isPined: !todo.isPined} : todo
+            )
+        )
+    }
 
     const normalizedSearchTerm = searchTerm.trim().toLowerCase();
     const filteredTodos = normalizedSearchTerm
@@ -70,11 +81,20 @@ function TodoListApp() {
         : todos;
 
     return (
-        <div className="todo">
+        <div className={`todo todo--${bgColor}`}>
             <TodoHeader />
-            <TodoSearch searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            <div className="todo__colors">
+                {BG_COLORS.map((color) => (
+                    <button
+                        key={color}
+                        className={`todo__color-btn todo__color-btn--${color}${bgColor === color ? ' todo__color-btn--active' : ''}`}
+                        onClick={() => setBgColor(color)}
+                    />
+                ))}
+            </div>
             <TodoAdder addTodo={addTodo} />
-            <TodoList todos={filteredTodos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} editTodo={editTodo} />
+            <TodoSearch searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            <TodoList todos={filteredTodos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} editTodo={editTodo} togglePinTodo={togglePinTodo} />
         </div>
     )
 }
