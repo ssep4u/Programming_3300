@@ -38,4 +38,5 @@ npm create vite@latest .
     <Link to="/"></Link>
     ```
 - `useNavigate()`
+- 3301 강재호 1-1	날짜 표시?	★	Date, 컴포넌트 렌더링
 - 3301 강재호 1-9	날씨	★★★★	useEffect, fetch, 외부 API.

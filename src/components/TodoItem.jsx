@@ -43,7 +43,7 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo }) {
                 />
             }
 
-
+            <span>{new Date(todo.id).toLocaleString()}</span>
             <Button
                 className="todo__button todo__button--edit"
                 onClick={handleEditClick}
