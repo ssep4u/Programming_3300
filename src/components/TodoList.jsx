@@ -2,7 +2,7 @@ import TodoItemEmpty from './TodoItemEmpty.jsx'
 import TodoItem from './TodoItem.jsx'
 
 export default function TodoList({ todos, ...rest }) {
-    const sortedTodos = [...todos].sort((a, b) => b.isPined - a.isPined);
+    const sortedTodos = [...todos].sort((a, b) => Number(Boolean(b.isPined)) - Number(Boolean(a.isPined)));
 
     return (
         <ul className="todo__list">
