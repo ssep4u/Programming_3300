@@ -64,9 +64,10 @@ function TodoListApp() {
         )
     }
 
-    const filteredTodos = todos.filter((todo) =>
-        todo.text.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+    const filteredTodos = normalizedSearchTerm
+        ? todos.filter((todo) => todo.text.toLowerCase().includes(normalizedSearchTerm))
+        : todos;
 
     return (
         <div className="todo">
