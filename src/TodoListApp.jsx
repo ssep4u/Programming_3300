@@ -8,6 +8,8 @@ import TodoAdder from './components/TodoAdder.jsx'
 // import TodoItem from './components/TodoItem.jsx'
 import TodoList from './components/TodoList.jsx'
 
+const BG_COLORS = ['white', 'yellow', 'green', 'blue', 'pink']
+
 class Todo {
     constructor(text) {
         this.id = Date.now();   //할일 id: 고유의 값 == new Date().getTime()
@@ -25,6 +27,7 @@ function TodoListApp() {
     }
 
     const [todos, setTodos] = useState(initTodos);  //initTodos 함수는 react 처음 한번 호출
+    const [bgColor, setBgColor] = useState('white');
     //LocalStorage에 할 일 목록 저장하자
     useEffect(() => {
         localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(todos)); //JSON -> string
@@ -61,9 +64,17 @@ function TodoListApp() {
     }
 
     return (
-        <div className="todo">
-            
+        <div className={`todo todo--${bgColor}`}>
             <TodoHeader />
+            <div className="todo__colors">
+                {BG_COLORS.map((color) => (
+                    <button
+                        key={color}
+                        className={`todo__color-btn todo__color-btn--${color}${bgColor === color ? ' todo__color-btn--active' : ''}`}
+                        onClick={() => setBgColor(color)}
+                    />
+                ))}
+            </div>
             <TodoAdder addTodo={addTodo} />
             <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} editTodo={editTodo} />
         </div>
