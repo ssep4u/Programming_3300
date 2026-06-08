@@ -28,7 +28,7 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo, toggl
 
     return (
         // todo.isCompleted가 true면 todo__item--complete 클래스 추가, 아니면 말고
-        <li className={`todo__item${todo.isCompleted ? " todo__item--complete" : ""}${todo.isPined ? " todo__item--pined" : ""}`}>
+        <li className={`todo__item${todo.isCompleted ? " todo__item--complete" : ""}${todo.isPinned ? " todo__item--pinned" : ""}`}>
             {/* 수정중이 아니면 */}
             {!isEditing &&
                 <Checkbox
@@ -70,9 +70,9 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo, toggl
                 onClick={() => deleteTodo(todo.id)}
             >❌</Button>
             <Button
-                className={`todo__button todo__button--pin${todo.isPined ? " todo__button--pined" : ""}`}
+                className={`todo__button todo__button--pin${todo.isPinned ? " todo__button--pinned" : ""}`}
                 onClick={() => togglePinTodo(todo.id)}
-            >{todo.isPined ? "📍" : "📌"}</Button>
+            >{todo.isPinned ? "📍" : "📌"}</Button>
         </li>
     )
 }
