@@ -88,6 +88,10 @@ export default function TodoItem({
         toggleTodo(todo.id);
     }
 
+export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo, togglePinTodo }) {
+    const [isEditing, setIsEditing] = useState(false);  //수정중인지 아닌지
+    const [editText, setEditText] = useState(todo.text);    //수정한 text
+
     function handleEditClick() {
 
         if (!isEditing) {
@@ -110,10 +114,15 @@ export default function TodoItem({
         }
     }
 
+    function handleCancelEdit() {
+        setEditText(todo.text);
+        setIsEditing(false);
+    }
+
     return (
-
-        <li className={`todo__item${todo.isCompleted ? " todo__item--complete" : ""}`}>
-
+        // todo.isCompleted가 true면 todo__item--complete 클래스 추가, 아니면 말고
+        <li className={`todo__item${todo.isCompleted ? " todo__item--complete" : ""}${todo.isPined ? " todo__item--pined" : ""}`}>
+            {/* 수정중이 아니면 */}
             {!isEditing &&
                 <Checkbox
                     id={todo.id}
@@ -129,17 +138,22 @@ export default function TodoItem({
                     type="text"
                     className='todo__input--edit'
                     value={editText}
-                    onChange={(event) =>
-                        setEditText(event.target.value)
-                    }
-                    onKeyUp={(event) => {
-                        event.key === 'Enter' &&
-                            handleEditClick()
+                    onChange={(event) => setEditText(event.target.value)}
+                    onKeyDown={(event) => {
+                        if (event.key === 'Enter') {
+                            event.preventDefault();
+                            handleEditClick();
+                        }
+
+                        if (event.key === 'Escape') {
+                            handleCancelEdit();
+                        }
                     }}
                     autoFocus
                 />
             }
 
+            <span>{new Date(todo.id).toLocaleString()}</span>
             <Button
                 className="todo__button todo__button--edit"
                 onClick={handleEditClick}
@@ -150,10 +164,11 @@ export default function TodoItem({
             <Button
                 className="todo__button todo__button--delete"
                 onClick={() => deleteTodo(todo.id)}
-            >
-                ❌
-            </Button>
-
+            >❌</Button>
+            <Button
+                className={`todo__button todo__button--pin${todo.isPined ? " todo__button--pined" : ""}`}
+                onClick={() => togglePinTodo(todo.id)}
+            >{todo.isPined ? "📍" : "📌"}</Button>
         </li>
     )
 }
