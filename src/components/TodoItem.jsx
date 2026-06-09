@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Checkbox from './Checkbox.jsx'
 import Button from './Button.jsx'
 
-export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo }) {
+export default function TodoItem({ todo, toggleTodo, togglePin, deleteTodo, editTodo }) {
     const [isEditing, setIsEditing] = useState(false);  //수정중인지 아닌지
     const [editText, setEditText] = useState(todo.text);    //수정한 text
     function handleEditClick() {
@@ -14,14 +14,14 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo }) {
             //edit 끝
             const trimmedText = editText.trim();
             if (trimmedText !== todo.text && trimmedText !== "") {     //이전 값과 같지 않고, 빈칸이 아니면
-                editTodo(todo.id, trimmedText);                        //editTodo
+                editTodo(todo.id, trimmedText);                    //editTodo
             }
             setIsEditing(false);
         }
     }
     return (
         // todo.isCompleted가 true면 todo__item--complete 클래스 추가, 아니면 말고
-        <li className={`todo__item${todo.isCompleted ? " todo__item--complete" : ""}`}>
+        <li className={`todo__item${todo.isCompleted ? " todo__item--complete" : ""}${todo.isPinned ? " todo__item--pinned" : ""}`}>
             {/* 수정중이 아니면 */}
             {!isEditing &&
                 <Checkbox
@@ -40,10 +40,17 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo }) {
                     //enter 치면 handleEditClick()
                     onKeyUp={(event) => { event.key === 'Enter' && handleEditClick() }}
                     autoFocus
+                    onKeyDown={(event) => { event.key === 'Escape' && setIsEditing(false) }}
                 />
             }
-
-
+            <Button
+                className="todo__button todo__button--pin"
+                onClick={() => togglePin(todo.id)}
+                aria-pressed={todo.isPinned}
+                title={todo.isPinned ? "고정 해제" : "상단 고정"}
+            >
+                📌
+            </Button>
             <Button
                 className="todo__button todo__button--edit"
                 onClick={handleEditClick}

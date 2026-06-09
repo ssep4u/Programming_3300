@@ -38,6 +38,9 @@
     padding: 10px;
     border-bottom: 1px solid #eee;
 }
+.todo__item--pinned {
+    background-color: #e2e1e1;
+}
 .todo__check {
     width: 20px;
     height: 20px;
@@ -52,6 +55,7 @@
     flex: 1;
 }
 .todo__button--edit,
+.todo__button--pin,
 .todo__button--delete {
     font-size: 0.8rem;
     margin-left: 10px;

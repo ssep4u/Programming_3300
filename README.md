@@ -38,3 +38,5 @@ npm create vite@latest .
     <Link to="/"></Link>
     ```
 - `useNavigate()`
+- 3310 이상연 2-1 수정하다가 ESC 누르면, 수정 취소	★	<Checkbox onKeyDown />
+- 3310 이상연 2-11 상단 고정(pin) ★★ boolean 값, 정렬 로직
