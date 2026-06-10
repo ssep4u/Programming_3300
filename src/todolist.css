@@ -1,32 +1,40 @@
 .todo {
     /* width: 80%;
     min-width: 400px; */
-    width: max(80%, 400px);    /* 보통: 80%, 최소: 400px */
-    margin: 20px auto;  /* 위아래: 20px, 좌우: 여백 균등 분배 */
+    width: max(80%, 400px);
+    /* 보통: 80%, 최소: 400px */
+    margin: 20px auto;
+    /* 위아래: 20px, 좌우: 여백 균등 분배 */
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 16px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);    /* 세로:아래로 2px, blur: 4px */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* 세로:아래로 2px, blur: 4px */
 }
+
 .todo__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
 }
+
 .todo__form {
     display: flex;
     margin-bottom: 10px;
     padding: 10px;
 }
+
 .todo__input {
     padding: 10px;
     font-size: 1.2rem;
     border: 1px solid #ccc;
     border-radius: 8px;
     margin-right: 10px;
-    flex: 1;    /* display: flex 안의 아이템 중 여유 공간만큼 늘리자 */
+    flex: 1;
+    /* display: flex 안의 아이템 중 여유 공간만큼 늘리자 */
 }
+
 .todo__button {
     padding: 10px;
     border: none;
@@ -35,54 +43,79 @@
     cursor: pointer;
     color: #fff;
 }
+
 .todo__button--add {
     background-color: #4984e4;
 }
+
 .todo__button--share {
     background-color: #555;
 }
+
 .todo__item {
     display: flex;
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid #eee;
 }
+
 .todo__item--pined {
     background-color: #fff8df;
 }
+
 .todo__check {
     width: 20px;
     height: 20px;
     cursor: pointer;
-    accent-color: #999;   /* 체크했을 때 배경색, 눈에 띄지 않게 하자 */
+    accent-color: #999;
+    /* 체크했을 때 배경색, 눈에 띄지 않게 하자 */
 }
+
 .todo__label {
     margin: 0 10px;
     flex: 1;
 }
+
 .todo__input--edit {
     flex: 1;
 }
+
 .todo__button--edit,
 .todo__button--delete,
 .todo__button--pin {
     font-size: 0.8rem;
     margin-left: 10px;
 }
+
 .todo__button--pined {
     background-color: #f0ad00;
 }
+
 .todo__item--complete .todo__label {
     text-decoration: line-through;
     color: #999;
 }
 
 /* 배경색 클래스 */
-.todo--white  { background-color: #f9f9f9; }
-.todo--yellow { background-color: #fffde7; }
-.todo--green  { background-color: #e8f5e9; }
-.todo--blue   { background-color: #e3f2fd; }
-.todo--pink   { background-color: #fce4ec; }
+.todo--white {
+    background-color: #f9f9f9;
+}
+
+.todo--yellow {
+    background-color: #fffde7;
+}
+
+.todo--green {
+    background-color: #e8f5e9;
+}
+
+.todo--blue {
+    background-color: #e3f2fd;
+}
+
+.todo--pink {
+    background-color: #fce4ec;
+}
 
 /* 배경색 선택 버튼 */
 .todo__colors {
@@ -90,6 +123,7 @@
     gap: 8px;
     margin-bottom: 10px;
 }
+
 .todo__color-btn {
     width: 24px;
     height: 24px;
@@ -97,15 +131,89 @@
     border: 2px solid #ccc;
     cursor: pointer;
 }
+
 .todo__color-btn--active {
     border-color: #333;
     transform: scale(1.2);
 }
-.todo__color-btn--white  { background-color: #f9f9f9; }
-.todo__color-btn--yellow { background-color: #fffde7; }
-.todo__color-btn--green  { background-color: #e8f5e9; }
-.todo__color-btn--blue   { background-color: #e3f2fd; }
-.todo__color-btn--pink   { background-color: #fce4ec; }
+
+.todo__color-btn--white {
+    background-color: #f9f9f9;
+}
+
+.todo__color-btn--yellow {
+    background-color: #fffde7;
+}
+
+.todo__color-btn--green {
+    background-color: #e8f5e9;
+}
+
+.todo__color-btn--blue {
+    background-color: #e3f2fd;
+}
+
+.todo__color-btn--pink {
+    background-color: #fce4ec;
+}
 
 /* A > B: 바로 아래 자식
 A B: 전체 자식 중에 한 자식: 자손 */
+
+@keyframes crackFlash {
+  /* 0%: 야구공이 날아와 부딪히기 직전 (아직 깨끗한 상태) */
+  0% {
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.9) 1px, transparent 2px);
+    backdrop-filter: blur(0px);
+    opacity: 0;
+  }
+  
+  /* 10%: 쾅! 타격 순간, 중앙에 강한 균열 점이 생기고 주변이 살짝 흐려짐 */
+  10% {
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 10px, rgba(255,255,255,0.2) 30px, transparent 100px);
+    backdrop-filter: blur(1px);
+    opacity: 1;
+  }
+
+  /* 20% ~ 50%: 거미줄 모양으로 유리가 순식간에 쩍쩍 갈라지는 (Crack) 하이라이트 구간 */
+  20% {
+    background: 
+      /* 중앙 파편화 */
+      radial-gradient(circle at center, transparent 20px, rgba(255,255,255,0.3) 25px, transparent 30px),
+      /* 사방으로 뻗어나가는 날카로운 유리 금 (크랙) */
+      linear-gradient(45deg, transparent 49%, rgba(255,255,255,0.8) 50%, transparent 51%),
+      linear-gradient(-45deg, transparent 49%, rgba(255,255,255,0.8) 50%, transparent 51%),
+      linear-gradient(90deg, transparent 49%, rgba(255,255,255,0.8) 50%, transparent 51%),
+      linear-gradient(0deg, transparent 49%, rgba(255,255,255,0.8) 50%, transparent 51%);
+    backdrop-filter: blur(2px);
+  }
+
+  /* 50%: 유리가 완전히 조각조각 깨져서 금이 더 얇고 촘촘해짐 */
+  50% {
+    background: 
+      /* 다중 원형 균열 */
+      radial-gradient(circle at center, transparent 10px, rgba(255,255,255,0.5) 12px, transparent 40px, rgba(255,255,255,0.3) 45px, transparent 80px),
+      /* 자잘하게 쪼개지는 선들 */
+      linear-gradient(45deg, transparent 49.5%, rgba(255,255,255,0.6) 50%, transparent 50.5%),
+      linear-gradient(-45deg, transparent 49.5%, rgba(255,255,255,0.6) 50%, transparent 50.5%),
+      linear-gradient(90deg, transparent 49.5%, rgba(255,255,255,0.6) 50%, transparent 50.5%),
+      linear-gradient(0deg, transparent 49.5%, rgba(255,255,255,0.6) 50%, transparent 50.5%),
+      linear-gradient(20deg, transparent 49.5%, rgba(255,255,255,0.4) 50%, transparent 50.5%),
+      linear-gradient(-20deg, transparent 49.5%, rgba(255,255,255,0.4) 50%, transparent 50.5%);
+    backdrop-filter: blur(3px);
+    opacity: 1;
+  }
+
+  /* 80%: 깨진 상태로 잠시 잔상이 유지되다가 */
+  80% {
+    backdrop-filter: blur(2px);
+    opacity: 0.8;
+  }
+
+  /* 100%: 유리 파편과 금이 아래로 떨어지듯 스르륵 사라짐 */
+  100% {
+    transform: translateY(10px); /* 아주 살짝 아래로 처지며 사라지는 연출 */
+    backdrop-filter: blur(0px);
+    opacity: 0;
+  }
+}

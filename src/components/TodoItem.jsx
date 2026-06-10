@@ -7,7 +7,8 @@ export default function TodoItem({
     todo,
     toggleTodo,
     deleteTodo,
-    editTodo
+    editTodo,
+    togglePinTodo
 }) {
 
     const [isEditing, setIsEditing] = useState(false);
@@ -46,11 +47,11 @@ export default function TodoItem({
                     inset:0;
                     background:
                     radial-gradient(circle at center,
-                    rgba(255,255,255,0.9) 1px,
+                    rgba(255, 255, 255, 0.9) 1px,
                     transparent 2px);
                     backdrop-filter: blur(1px);
                     z-index:9998;
-                    animation: crackFlash 0.5s ease;
+                    animation: crackFlash .5s ease;
                 "></div>
             `;
 
@@ -88,9 +89,6 @@ export default function TodoItem({
         toggleTodo(todo.id);
     }
 
-export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo, togglePinTodo }) {
-    const [isEditing, setIsEditing] = useState(false);  //수정중인지 아닌지
-    const [editText, setEditText] = useState(todo.text);    //수정한 text
 
     function handleEditClick() {
 
@@ -153,7 +151,7 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo, toggl
                 />
             }
 
-            <span>{new Date(todo.id).toLocaleString()}</span>
+            <span>{new Date(todo.createdAt).toLocaleString()}</span>
             <Button
                 className="todo__button todo__button--edit"
                 onClick={handleEditClick}
