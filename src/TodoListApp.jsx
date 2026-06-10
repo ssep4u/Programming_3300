@@ -8,6 +8,7 @@ import TodoAdder from './components/TodoAdder.jsx'
 // import TodoItem from './components/TodoItem.jsx'
 import TodoList from './components/TodoList.jsx'
 import { Todo } from './types/Todo.jsx'
+import { getMinDateTime } from './function/localTime.jsx';
 
 const TODOS_STORAGE_KEY = 'todos';
 function TodoListApp() {
@@ -53,6 +54,86 @@ function TodoListApp() {
             )
         )
     }
+
+    function showNotification(todo) {
+        if (!("Notification" in window)) {
+            alert("이 브라우저는 웹 알림을 지원하지 않습니다.");
+            return;
+        }
+        if (Notification.permission === "granted") {
+            triggerAlarm(todo);
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then((permission) => {
+                if (permission === "granted") {
+                    triggerAlarm(todo);
+                }
+            });
+        }
+    }
+
+    function triggerAlarm(todo) {
+        const options = {
+            body: todo.text,
+            silent: false,
+        };
+        const notification = new Notification("마감됨", options);
+        notification.onclick = () => {
+            window.parent.focus();
+            notification.close();
+        };
+    }
+
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        let intervalId = null;
+        let timeoutId = null;
+
+        const checkDeadlines = () => {
+            setCount((prev) => prev + 1);
+
+            const nowTime = getMinDateTime();
+            console.log(`[0초 감지] 현재시간: ${nowTime}`);
+
+            todos.forEach(todo => {
+                if (todo.deadline === nowTime) {
+                    showNotification(todo);
+                }
+            });
+        };
+
+        const startScheduler = () => {
+            const now = new Date();
+
+            const nextMinute = new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate(),
+                now.getHours(),
+                now.getMinutes() + 1,
+                0,
+                0
+            );
+
+            const timeToNextMinute = nextMinute - now;
+
+            timeoutId = setTimeout(() => {
+                checkDeadlines();
+
+                intervalId = setInterval(checkDeadlines, 60000);
+            }, timeToNextMinute);
+        };
+
+        // 스케줄러 시작
+        startScheduler();
+
+
+        return () => {
+            if (timeoutId) clearTimeout(timeoutId);
+            if (intervalId) clearInterval(intervalId);
+        };
+    }, [todos]);
+
 
     return (
         <div className="todo">

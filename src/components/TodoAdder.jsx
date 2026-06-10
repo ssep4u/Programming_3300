@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Button from './Button.jsx'
+import { getMinDateTime } from '../function/localTime.jsx';
 
 export default function TodoAdder({ addTodo }) {
     const [inputTodo, setInputTodo] = useState('');
@@ -15,13 +16,6 @@ export default function TodoAdder({ addTodo }) {
         setInputTodo('');
         setDeadline('');       //input text 빈칸으로 하자
     }
-
-    const getMinDateTime = () => {
-        const now = new Date();
-        const offset = now.getTimezoneOffset() * 60000;
-        const localISOTime = new Date(now - offset).toISOString().slice(0, 16);
-        return localISOTime;
-    };
     
     return (
         <form className="todo__form" onSubmit={handleSubmit}>
