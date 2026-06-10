@@ -1,44 +1,31 @@
 import { useState } from 'react'
 import Checkbox from './Checkbox.jsx'
 import Button from './Button.jsx'
-import confetti from "canvas-confetti";
+import confetti from 'canvas-confetti'
 
-export default function TodoItem({
-    todo,
-    toggleTodo,
-    deleteTodo,
-    editTodo
-}) {
+export default function TodoItem({ todo, toggleTodo, togglePin, deleteTodo, editTodo }) {
+    const [isEditing, setIsEditing] = useState(false);  //수정중인지 아닌지
+    const [editText, setEditText] = useState(todo.text);    //수정한 text
 
-    const [isEditing, setIsEditing] = useState(false);
-    const [editText, setEditText] = useState(todo.text);
-
-    // ⚾ 야구공 + 💥 유리 깨짐 + 🎉 폭죽
     function playCeremony() {
-
-        // 야구공 생성
-        const ball = document.createElement("div");
-        ball.innerHTML = "⚾";
-        ball.style.position = "fixed";
-        ball.style.left = "-100px";
-        ball.style.top = "50%";
-        ball.style.fontSize = "70px";
-        ball.style.zIndex = "9999";
-        ball.style.transition = "all 0.7s ease-in-out";
+        const ball = document.createElement('div');
+        ball.innerHTML = '⚾';
+        ball.style.position = 'fixed';
+        ball.style.left = '-100px';
+        ball.style.top = '50%';
+        ball.style.fontSize = '70px';
+        ball.style.zIndex = '9999';
+        ball.style.transition = 'all 0.7s ease-in-out';
         document.body.appendChild(ball);
 
-        // 날아가기
         setTimeout(() => {
-            ball.style.left = "50%";
-            ball.style.top = "40%";
-            ball.style.transform = "rotate(720deg) scale(1.4)";
+            ball.style.left = '50%';
+            ball.style.top = '40%';
+            ball.style.transform = 'rotate(720deg) scale(1.4)';
         }, 10);
 
-        // 충돌
         setTimeout(() => {
-
-            // 유리 깨짐 효과
-            const crack = document.createElement("div");
+            const crack = document.createElement('div');
 
             crack.innerHTML = `
                 <div style="
@@ -56,7 +43,6 @@ export default function TodoItem({
 
             document.body.appendChild(crack);
 
-            // confetti
             confetti({
                 particleCount: 250,
                 spread: 180,
@@ -65,22 +51,17 @@ export default function TodoItem({
                 origin: { y: 0.6 }
             });
 
-            // 흔들림
-            document.body.style.animation = "shake 0.4s";
+            document.body.style.animation = 'shake 0.4s';
 
-            // 제거
             setTimeout(() => {
-                document.body.style.animation = "";
+                document.body.style.animation = '';
                 crack.remove();
                 ball.remove();
             }, 600);
-
         }, 700);
     }
 
-    // 체크
     function handleToggle() {
-
         if (!todo.isCompleted) {
             playCeremony();
         }
@@ -88,26 +69,14 @@ export default function TodoItem({
         toggleTodo(todo.id);
     }
 
-export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo, togglePinTodo }) {
-    const [isEditing, setIsEditing] = useState(false);  //수정중인지 아닌지
-    const [editText, setEditText] = useState(todo.text);    //수정한 text
-
     function handleEditClick() {
-
         if (!isEditing) {
-
             setIsEditing(true);
             setEditText(todo.text);
-
         } else {
-
             const trimmedText = editText.trim();
-
-            if (
-                trimmedText !== todo.text &&
-                trimmedText !== ""
-            ) {
-                editTodo(todo.id, trimmedText);
+            if (trimmedText !== todo.text && trimmedText !== '') {     //이전 값과 같지 않고, 빈칸이 아니면
+                editTodo(todo.id, trimmedText);                    //editTodo
             }
 
             setIsEditing(false);
@@ -120,8 +89,8 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo, toggl
     }
 
     return (
-        // todo.isCompleted가 true면 todo__item--complete 클래스 추가, 아니면 말고
-        <li className={`todo__item${todo.isCompleted ? " todo__item--complete" : ""}${todo.isPined ? " todo__item--pined" : ""}`}>
+        // todo.isCompleted가 true면 todo__item--complete 클래스 추가, todo.isPinned가 true면 todo__item--pinned 클래스 추가
+        <li className={`todo__item${todo.isCompleted ? ' todo__item--complete' : ''}${todo.isPinned ? ' todo__item--pinned' : ''}`}>
             {/* 수정중이 아니면 */}
             {!isEditing &&
                 <Checkbox
@@ -133,10 +102,11 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo, toggl
                 </Checkbox>
             }
 
+            {/* 수정중이면 */}
             {isEditing &&
                 <input
                     type="text"
-                    className='todo__input--edit'
+                    className="todo__input--edit"
                     value={editText}
                     onChange={(event) => setEditText(event.target.value)}
                     onKeyDown={(event) => {
@@ -153,22 +123,26 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, editTodo, toggl
                 />
             }
 
-            <span>{new Date(todo.id).toLocaleString()}</span>
+            <Button
+                className="todo__button todo__button--pin"
+                onClick={() => togglePin(todo.id)}
+                aria-pressed={todo.isPinned}
+                title={todo.isPinned ? '고정 해제' : '상단 고정'}
+            >
+                📌
+            </Button>
             <Button
                 className="todo__button todo__button--edit"
                 onClick={handleEditClick}
             >
-                {isEditing ? "💾" : "✏️"}
+                {isEditing ? '💾' : '✏️'}
             </Button>
-
             <Button
                 className="todo__button todo__button--delete"
                 onClick={() => deleteTodo(todo.id)}
-            >❌</Button>
-            <Button
-                className={`todo__button todo__button--pin${todo.isPined ? " todo__button--pined" : ""}`}
-                onClick={() => togglePinTodo(todo.id)}
-            >{todo.isPined ? "📍" : "📌"}</Button>
+            >
+                ❌
+            </Button>
         </li>
     )
 }

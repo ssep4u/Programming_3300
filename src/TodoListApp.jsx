@@ -7,17 +7,13 @@ import TodoHeader from './components/TodoHeader.jsx'
 import TodoAdder from './components/TodoAdder.jsx'
 // import TodoItem from './components/TodoItem.jsx'
 import TodoList from './components/TodoList.jsx'
-import TodoSearch from './components/Search.jsx';
-
-const BG_COLORS = ['white', 'yellow', 'green', 'blue', 'pink']
 
 class Todo {
     constructor(text) {
         this.id = crypto.randomUUID();   //할일 id: 고유의 값
         this.text = text;       //할일의 내용
         this.isCompleted = false; //할일 완료 여부
-        this.createdAt = Date.now(); //할일 생성 시간
-        this.isPined = false;    //할일 고정 여부
+        this.isPinned = false;   //상단 고정 여부
     }
 }
 const TODOS_STORAGE_KEY = 'todos';
@@ -40,19 +36,7 @@ function TodoListApp() {
         return existingTodos;
     }
 
-    //검색state
-    const [searchTerm, setSearchTerm] = useState("");
-
     const [todos, setTodos] = useState(initTodos);  //initTodos 함수는 react 처음 한번 호출
-    useEffect(() => {
-        const url = new URL(window.location.href);
-        if (!url.searchParams.has('todo')) return;
-
-        url.searchParams.delete('todo');
-        window.history.replaceState({}, '', url.pathname + url.search + url.hash);
-    }, []);
-    
-    const [bgColor, setBgColor] = useState('white');
     //LocalStorage에 할 일 목록 저장하자
     useEffect(() => {
         localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(todos)); //JSON -> string
@@ -73,6 +57,13 @@ function TodoListApp() {
             )
         )
     }
+    const togglePin = (id) => {
+        setTodos((todos) =>
+            todos.map((todo) =>
+                todo.id === id ? { ...todo, isPinned: !todo.isPinned } : todo
+            )
+        )
+    }
     const deleteTodo = (id) => {
         //todos에서 하나씩 꺼낸 todo. id가 다르면, 복사하자
         setTodos((todos) => 
@@ -87,45 +78,20 @@ function TodoListApp() {
             )
         )
     }
-    const copyShareLink = async () => {
-        const url = new URL(window.location.href);
-        url.search = '';
 
-        todos.forEach((todo) => {
-            url.searchParams.append('todo', todo.text);
-        });
+    const sortedTodos = [...todos].sort((leftTodo, rightTodo) => {
+        if (leftTodo.isPinned === rightTodo.isPinned) {
+            return leftTodo.id - rightTodo.id;
+        }
 
-        await navigator.clipboard.writeText(url.toString());
-    }
-
-    const togglePinTodo = (id) => {
-        setTodos((todos) =>
-            todos.map((todo) =>
-                todo.id === id ? { ...todo, isPined: !todo.isPined} : todo
-            )
-        )
-    }
-
-    const normalizedSearchTerm = searchTerm.trim().toLowerCase();
-    const filteredTodos = normalizedSearchTerm
-        ? todos.filter((todo) => todo.text.toLowerCase().includes(normalizedSearchTerm))
-        : todos;
+        return leftTodo.isPinned ? -1 : 1;
+    })
 
     return (
-        <div className={`todo todo--${bgColor}`}>
-            <TodoHeader copyShareLink={copyShareLink} />
-            <div className="todo__colors">
-                {BG_COLORS.map((color) => (
-                    <button
-                        key={color}
-                        className={`todo__color-btn todo__color-btn--${color}${bgColor === color ? ' todo__color-btn--active' : ''}`}
-                        onClick={() => setBgColor(color)}
-                    />
-                ))}
-            </div>
+        <div className="todo">
+            <TodoHeader />
             <TodoAdder addTodo={addTodo} />
-            <TodoSearch searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-            <TodoList todos={filteredTodos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} editTodo={editTodo} togglePinTodo={togglePinTodo} />
+            <TodoList todos={sortedTodos} toggleTodo={toggleTodo} togglePin={togglePin} deleteTodo={deleteTodo} editTodo={editTodo} />
         </div>
     )
 }
