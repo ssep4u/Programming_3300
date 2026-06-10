@@ -105,7 +105,7 @@ App() {
                   aria-hidden="true"
                 >
                   <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
+                </svg> 
                 Bluesky
               </a>
             </li>
