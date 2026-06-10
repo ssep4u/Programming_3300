@@ -18,6 +18,10 @@ class Todo {
         this.isCompleted = false; //할일 완료 여부
         this.createdAt = Date.now(); //할일 생성 시간
         this.isPined = false;    //할일 고정 여부
+        this.timerStatus = 'idle';   // 'idle' | 'running'
+        this.timerStartedAt = null;  //시작 버튼을 누른 시각
+        this.timerElapsed = 0;       //진행 중 경과 시간 (표시용, ms)
+        this.timerSession = null;    //마지막 완료 기록 {startedAt, endedAt, duration}
     }
 }
 const TODOS_STORAGE_KEY = 'todos';
@@ -44,6 +48,24 @@ function TodoListApp() {
     const [searchTerm, setSearchTerm] = useState("");
 
     const [todos, setTodos] = useState(initTodos);  //initTodos 함수는 react 처음 한번 호출
+
+    // 실행 중인 타이머가 하나라도 있을 때만 interval 실행
+    const hasRunningTimer = todos.some((t) => t.timerStatus === 'running');
+    useEffect(() => {
+        if (!hasRunningTimer) return;
+        const interval = setInterval(() => {
+            const now = Date.now();
+            setTodos((prev) =>
+                prev.map((t) =>
+                    t.timerStatus === 'running'
+                        ? { ...t, timerElapsed: now - t.timerStartedAt }
+                        : t
+                )
+            );
+        }, 100);
+        return () => clearInterval(interval);
+    }, [hasRunningTimer]);
+
     useEffect(() => {
         const url = new URL(window.location.href);
         if (!url.searchParams.has('todo')) return;
@@ -106,6 +128,39 @@ function TodoListApp() {
         )
     }
 
+    const startTodoTimer = (id) => {
+        const now = Date.now();
+        setTodos((prev) =>
+            prev.map((t) =>
+                t.id === id
+                    ? { ...t, timerStatus: 'running', timerStartedAt: now, timerElapsed: 0 }
+                    : t
+            )
+        );
+    };
+
+    const completeTodoTimer = (id) => {
+        const now = Date.now();
+        setTodos((prev) =>
+            prev.map((t) => {
+                if (t.id !== id) return t;
+                const session = {
+                    id: crypto.randomUUID(),
+                    startedAt: t.timerStartedAt,
+                    endedAt: now,
+                    duration: now - t.timerStartedAt,
+                };
+                return {
+                    ...t,
+                    timerStatus: 'idle',
+                    timerStartedAt: null,
+                    timerElapsed: 0,
+                    timerSession: session,
+                };
+            })
+        );
+    };
+
     const normalizedSearchTerm = searchTerm.trim().toLowerCase();
     const filteredTodos = normalizedSearchTerm
         ? todos.filter((todo) => todo.text.toLowerCase().includes(normalizedSearchTerm))
@@ -125,7 +180,15 @@ function TodoListApp() {
             </div>
             <TodoAdder addTodo={addTodo} />
             <TodoSearch searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-            <TodoList todos={filteredTodos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} editTodo={editTodo} togglePinTodo={togglePinTodo} />
+            <TodoList
+                todos={filteredTodos}
+                toggleTodo={toggleTodo}
+                deleteTodo={deleteTodo}
+                editTodo={editTodo}
+                togglePinTodo={togglePinTodo}
+                startTodoTimer={startTodoTimer}
+                completeTodoTimer={completeTodoTimer}
+            />
         </div>
     )
 }

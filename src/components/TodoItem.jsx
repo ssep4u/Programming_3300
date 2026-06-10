@@ -3,11 +3,22 @@ import Checkbox from './Checkbox.jsx'
 import Button from './Button.jsx'
 import confetti from "canvas-confetti";
 
+function formatTime(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = totalSeconds % 60;
+    return [h, m, s].map((n) => String(n).padStart(2, '0')).join(':');
+}
+
 export default function TodoItem({
     todo,
     toggleTodo,
     deleteTodo,
-    editTodo
+    editTodo,
+    togglePinTodo,
+    startTodoTimer,
+    completeTodoTimer,
 }) {
 
     const [isEditing, setIsEditing] = useState(false);
@@ -116,56 +127,95 @@ export default function TodoItem({
         setIsEditing(false);
     }
 
+    const timerStatus = todo.timerStatus ?? 'idle';
+    const session = todo.timerSession ?? null;
+
     return (
-        // todo.isCompleted가 true면 todo__item--complete 클래스 추가, 아니면 말고
-        <li className={`todo__item${todo.isCompleted ? " todo__item--complete" : ""}${todo.isPined ? " todo__item--pined" : ""}`}>
-            {/* 수정중이 아니면 */}
-            {!isEditing &&
-                <Checkbox
-                    id={todo.id}
-                    checked={todo.isCompleted}
-                    onChange={handleToggle}
+        <li className={`todo__item${todo.isCompleted ? " todo__item--complete" : ""}${todo.isPined ? " todo__item--pined" : ""}${timerStatus === 'running' ? " todo__item--timing" : ""}`}>
+            {/* 메인 행 */}
+            <div className="todo__item-row">
+                {!isEditing &&
+                    <Checkbox
+                        id={todo.id}
+                        checked={todo.isCompleted}
+                        onChange={handleToggle}
+                    >
+                        {todo.text}
+                    </Checkbox>
+                }
+
+                {isEditing &&
+                    <input
+                        type="text"
+                        className='todo__input--edit'
+                        value={editText}
+                        onChange={(event) => setEditText(event.target.value)}
+                        onKeyDown={(event) => {
+                            if (event.key === 'Enter') {
+                                event.preventDefault();
+                                handleEditClick();
+                            }
+
+                            if (event.key === 'Escape') {
+                                handleCancelEdit();
+                            }
+                        }}
+                        autoFocus
+                    />
+                }
+
+                {/* 타이머 */}
+                <div className="todo__timer">
+                    {timerStatus === 'idle' && (
+                        <Button
+                            className="todo__button todo__button--timer-start"
+                            onClick={() => startTodoTimer(todo.id)}
+                        >
+                            시작
+                        </Button>
+                    )}
+                    {timerStatus === 'running' && (
+                        <>
+                            <span className="todo__timer-display">
+                                {formatTime(todo.timerElapsed ?? 0)}
+                            </span>
+                            <Button
+                                className="todo__button todo__button--timer-complete"
+                                onClick={() => completeTodoTimer(todo.id)}
+                            >
+                                완료
+                            </Button>
+                        </>
+                    )}
+                </div>
+
+                <span className="todo__created-at">{new Date(todo.createdAt).toLocaleString()}</span>
+                <Button
+                    className="todo__button todo__button--edit"
+                    onClick={handleEditClick}
                 >
-                    {todo.text}
-                </Checkbox>
-            }
+                    {isEditing ? "💾" : "✏️"}
+                </Button>
 
-            {isEditing &&
-                <input
-                    type="text"
-                    className='todo__input--edit'
-                    value={editText}
-                    onChange={(event) => setEditText(event.target.value)}
-                    onKeyDown={(event) => {
-                        if (event.key === 'Enter') {
-                            event.preventDefault();
-                            handleEditClick();
-                        }
+                <Button
+                    className="todo__button todo__button--delete"
+                    onClick={() => deleteTodo(todo.id)}
+                >❌</Button>
+                <Button
+                    className={`todo__button todo__button--pin${todo.isPined ? " todo__button--pined" : ""}`}
+                    onClick={() => togglePinTodo(todo.id)}
+                >{todo.isPined ? "📍" : "📌"}</Button>
+            </div>
 
-                        if (event.key === 'Escape') {
-                            handleCancelEdit();
-                        }
-                    }}
-                    autoFocus
-                />
-            }
-
-            <span>{new Date(todo.createdAt).toLocaleString()}</span>
-            <Button
-                className="todo__button todo__button--edit"
-                onClick={handleEditClick}
-            >
-                {isEditing ? "💾" : "✏️"}
-            </Button>
-
-            <Button
-                className="todo__button todo__button--delete"
-                onClick={() => deleteTodo(todo.id)}
-            >❌</Button>
-            <Button
-                className={`todo__button todo__button--pin${todo.isPined ? " todo__button--pined" : ""}`}
-                onClick={() => togglePinTodo(todo.id)}
-            >{todo.isPined ? "📍" : "📌"}</Button>
+            {/* 세션 기록 */}
+            {session && (
+                <div className="todo__session-item">
+                    <span className="todo__session-duration">{formatTime(session.duration)}</span>
+                    <span className="todo__session-time">
+                        {new Date(session.startedAt).toLocaleTimeString()} ~ {new Date(session.endedAt).toLocaleTimeString()}
+                    </span>
+                </div>
+            )}
         </li>
     )
 }

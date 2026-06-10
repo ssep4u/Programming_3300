@@ -54,9 +54,16 @@
 
 .todo__item {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     padding: 10px;
     border-bottom: 1px solid #eee;
+}
+
+/* 할일 메인 행 */
+.todo__item-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .todo__item--pined {
@@ -94,6 +101,59 @@
 .todo__item--complete .todo__label {
     text-decoration: line-through;
     color: #999;
+}
+
+.todo__item--timing {
+    background-color: #e8f5e9;
+}
+
+/* 타이머 영역 */
+.todo__timer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 4px;
+}
+
+.todo__timer-display {
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+    color: #333;
+    min-width: 72px;
+    text-align: center;
+}
+
+.todo__created-at {
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-left: 4px;
+    white-space: nowrap;
+}
+
+.todo__button--timer-start,
+.todo__button--timer-complete {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+}
+
+.todo__button--timer-start    { background-color: #4caf50; }
+.todo__button--timer-complete { background-color: #2196f3; }
+
+/* 세션 기록 */
+.todo__session-item {
+    margin-top: 4px;
+    padding-left: 28px;
+    display: flex;
+    gap: 10px;
+    font-size: 0.78rem;
+    color: #777;
+}
+
+.todo__session-duration {
+    font-variant-numeric: tabular-nums;
+    font-weight: bold;
+    color: #555;
+    min-width: 60px;
 }
 
 /* 배경색 클래스 */
