@@ -21,7 +21,7 @@ export default function AudioBox() {
         <div className="audio-box">
 
             <h3 className="audio-status">
-                {isPlaying ? "🎵재생중🎵" : "☠️정지☠️"}
+                {isPlaying ? "♫ 재생중" : "♫ 정지됨"}
             </h3>
 
             <audio ref={audioRef}>
@@ -31,10 +31,21 @@ export default function AudioBox() {
             <button
                 className="audio-button"
                 onClick={handleToggleAudio}
+                type="button"
             >
                 {isPlaying ? "❚❚" : "▶"}
             </button>
 
+            <div className={`audio-wave ${isPlaying ? "is-playing" : ""}`}>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     );
 }
